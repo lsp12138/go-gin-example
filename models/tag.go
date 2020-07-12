@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-// 标签列表的数据库操作
+// 标签的数据库操作
 
 type Tag struct {
 	Model

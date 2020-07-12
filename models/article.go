@@ -5,6 +5,8 @@ import (
 	"time"
 )
 
+// 文章的数据库操作
+
 type Article struct {
 	Model
 
