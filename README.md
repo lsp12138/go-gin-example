@@ -17,7 +17,7 @@
 
 # 测试api
 
-## 文章标签部分
+## Tag标签部分
 
 ### 获取全部标签
 
@@ -34,3 +34,25 @@
 ### 删除标签
 
 `DELETE http://127.0.0.1:8000/api/v1/tags/1`
+
+## Article文章部分
+
+### 新增文章
+
+`POST http://127.0.0.1:8000/api/v1/articles?tag_id=1&title=test1&desc=test-desc&content=test-content&created_by=test-created&state=1`
+
+### 查询全部文章
+
+`GET http://127.0.0.1:8000/api/v1/articles`
+
+### 查询指定文章
+
+`GET http://127.0.0.1:8000/api/v1/articles/1`
+
+### 修改文章
+
+`PUT http://127.0.0.1:8000/api/v1/articles/1?tag_id=1&title=test-edit1&desc=test-desc-edit&content=test-content-edit&modified_by=test-created-edit&state=0`
+
+### 删除文章
+
+`DELETE http://127.0.0.1:8000/api/v1/articles/1`
