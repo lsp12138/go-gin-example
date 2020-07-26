@@ -19,7 +19,9 @@ type Model struct {
 }
 
 func init() {
-    db, err := gorm.Open(conf.DBConfig.Type, fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
+    var err error
+    // 这里使用 := 时会创建一个新的db变量把全局变量db覆盖掉，导致空指针报错
+    db, err = gorm.Open(conf.DBConfig.Type, fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=Local",
         conf.DBConfig.User,
         conf.DBConfig.Password,
         conf.DBConfig.Host,

@@ -3,7 +3,6 @@ package routers
 import (
     "github.com/gin-gonic/gin"
     "github.com/lsp12138/go-gin-example/conf"
-    "github.com/lsp12138/go-gin-example/middleware/jwt"
     "github.com/lsp12138/go-gin-example/routers/api"
     v1 "github.com/lsp12138/go-gin-example/routers/api/v1"
 )
@@ -20,8 +19,8 @@ func InitRouter() *gin.Engine {
     r.GET("/auth", api.GetAuth)
 
     apiv1 := r.Group("/api/v1")
-    // 接入jwt中间件到gin
-    apiv1.Use(jwt.JWT())
+    // 接入jwt中间件到这个路由组
+    // apiv1.Use(jwt.JWT())
     {
         // 获取标签列表
         apiv1.GET("/tags", v1.GetTags)
