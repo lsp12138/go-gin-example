@@ -1,0 +1,17 @@
+# 编写基础的应用配置文件，由setting模块调用
+# 使用github.com/spf13/viper包，支持读取ENV和从远程读取配配置
+
+APP:
+  # debug or release
+  RUN_MODE: debug
+  PAGE_SIZE: 10
+  JWT_SECRET: 23347$040412
+  HTTP_PORT: 8000
+
+DB:
+  TYPE: mysql
+  USER: root
+  PASSWORD: 2w3e$R%T
+  HOST: 127.0.0.1:3306
+  NAME: go_gin_blog
+  TABLE_PREFIX: blog_
