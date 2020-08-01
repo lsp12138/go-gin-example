@@ -68,7 +68,8 @@ func ExistTagByID(id int) bool {
 }
 
 func DeleteTag(id int) bool {
-    db.Where("id = ?", id).Delete(&Tag{})
+    db.Model(&Tag{}).Where("id = ?", id).Update("deleted_on", time.Now().Unix())
+    // db.Where("id = ?", id).Delete(&Tag{})
     return true
 }
 

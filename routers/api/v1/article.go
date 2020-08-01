@@ -12,7 +12,12 @@ import (
     "net/http"
 )
 
-// 获取单个文章
+// @Summary 根据id获取文章
+// @Tags article文章管理
+// @Produce  json
+// @Param id path string true "ID"
+// @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
+// @Router /api/v1/articles/{id} [get]
 func GetArticle(c *gin.Context) {
     id := com.StrTo(c.Param("id")).MustInt()
     valid := validation.Validation{}
@@ -38,7 +43,13 @@ func GetArticle(c *gin.Context) {
     })
 }
 
-// 获取多个文章
+// @Summary 获取文章
+// @Tags article文章管理
+// @Produce  json
+// @Param state query int false "状态"
+// @Param tag_id query int false "标签id"
+// @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
+// @Router /api/v1/articles [get]
 func GetArticles(c *gin.Context) {
     data := make(map[string]interface{})
     maps := make(map[string]interface{})
@@ -80,7 +91,16 @@ func GetArticles(c *gin.Context) {
     })
 }
 
-// 新增文章
+// @Summary 新增文章
+// @Tags article文章管理
+// @Produce  json
+// @Param title query string true "标题"
+// @Param desc query string true "描述"
+// @Param content query string true "内容"
+// @Param created_by query string true "创建者"
+// @Param tag_id query int true "标签id"
+// @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
+// @Router /api/v1/articles [post]
 func AddArticle(c *gin.Context) {
     tagId := com.StrTo(c.Query("tag_id")).MustInt()
     title := c.Query("title")
@@ -126,7 +146,18 @@ func AddArticle(c *gin.Context) {
     })
 }
 
-// 修改文章
+// @Summary 修改文章
+// @Tags article文章管理
+// @Produce  json
+// @Param id path int true "id"
+// @Param title query string true "标题"
+// @Param desc query string true "描述"
+// @Param content query string true "内容"
+// @Param modified_by query string true "修改者"
+// @Param tag_id query int true "标签id"
+// @Param state query int true "标签状态"
+// @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
+// @Router /api/v1/articles/{id} [put]
 func EditArticle(c *gin.Context) {
     valid := validation.Validation{}
 
@@ -191,7 +222,12 @@ func EditArticle(c *gin.Context) {
     })
 }
 
-// 删除文章
+// @Summary 删除文章
+// @Tags article文章管理
+// @Produce  json
+// @Param id path int true "id"
+// @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
+// @Router /api/v1/articles/{id} [delete]
 func DeleteArticle(c *gin.Context) {
     id := com.StrTo(c.Param("id")).MustInt()
 

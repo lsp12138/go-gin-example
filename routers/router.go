@@ -3,8 +3,11 @@ package routers
 import (
     "github.com/gin-gonic/gin"
     "github.com/lsp12138/go-gin-example/conf"
+    _ "github.com/lsp12138/go-gin-example/docs"
     "github.com/lsp12138/go-gin-example/routers/api"
     v1 "github.com/lsp12138/go-gin-example/routers/api/v1"
+    swaggerFiles "github.com/swaggo/files"
+    ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 // 注册路由
@@ -14,6 +17,9 @@ func InitRouter() *gin.Engine {
     r.Use(gin.Logger())
     r.Use(gin.Recovery())
     gin.SetMode(conf.AppConfig.RunMode)
+
+    // 根目录执行swag init生成swagger文档，访问地址为/swagger/index.html
+    r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
     // 获取token的接口
     r.GET("/auth", api.GetAuth)
