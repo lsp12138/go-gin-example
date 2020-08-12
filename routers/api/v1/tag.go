@@ -3,7 +3,6 @@ package v1
 import (
     "github.com/astaxie/beego/validation"
     "github.com/gin-gonic/gin"
-    "github.com/lsp12138/go-gin-example/conf"
     "github.com/lsp12138/go-gin-example/models"
     "github.com/lsp12138/go-gin-example/pkg/e"
     "github.com/lsp12138/go-gin-example/pkg/util"
@@ -18,6 +17,8 @@ import (
 // @Produce  json
 // @Param name query string false "名称"
 // @Param state query int false "状态"
+// @Param page_num query int false "分页当前页"
+// @Param page_size query int false "分页大小"
 // @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
 // @Router /api/v1/tags [get]
 func GetTags(c *gin.Context) {
@@ -33,9 +34,11 @@ func GetTags(c *gin.Context) {
         state = com.StrTo(arg).MustInt()
         maps["state"] = state
     }
+    pageSize := util.GetPageSize(c.Query("page_size"))
+    pageNum := util.GetPageNum(c.Query("page_num"), pageSize)
     code := e.SUCCESS
-    // 分页的步长可通过app.ini进行配置，以lists、total的组合返回达到分页效果。
-    data["lists"] = models.GetTags(util.GetPage(c), conf.AppConfig.PageSize, maps)
+    // 分页的步长可进行配置，以lists、total的组合返回达到分页效果。
+    data["lists"] = models.GetTags(pageNum, pageSize, maps)
     data["total"] = models.GetTagTotal(maps)
     c.JSON(http.StatusOK, gin.H{
         "code": code,

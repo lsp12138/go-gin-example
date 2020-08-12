@@ -3,7 +3,6 @@ package v1
 import (
     "github.com/astaxie/beego/validation"
     "github.com/gin-gonic/gin"
-    "github.com/lsp12138/go-gin-example/conf"
     "github.com/lsp12138/go-gin-example/models"
     "github.com/lsp12138/go-gin-example/pkg/e"
     "github.com/lsp12138/go-gin-example/pkg/util"
@@ -48,6 +47,8 @@ func GetArticle(c *gin.Context) {
 // @Produce  json
 // @Param state query int false "状态"
 // @Param tag_id query int false "标签id"
+// @Param page_num query int false "分页当前页"
+// @Param page_size query int false "分页大小"
 // @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
 // @Router /api/v1/articles [get]
 func GetArticles(c *gin.Context) {
@@ -71,11 +72,14 @@ func GetArticles(c *gin.Context) {
         valid.Min(tagId, 1, "tag_id").Message("标签ID必须大于0")
     }
 
+    pageSize := util.GetPageSize(c.Query("page_size"))
+    pageNum := util.GetPageNum(c.Query("page_num"), pageSize)
+
     code := e.INVALID_PARAMS
     if !valid.HasErrors() {
         code = e.SUCCESS
 
-        data["lists"] = models.GetArticles(util.GetPage(c), conf.AppConfig.PageSize, maps)
+        data["lists"] = models.GetArticles(pageNum, pageSize, maps)
         data["total"] = models.GetArticleTotal(maps)
 
     } else {

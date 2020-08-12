@@ -55,12 +55,26 @@ func GetArticle(id int) (article Article) {
 // 那么有没有别的办法呢，大致是两种
 // gorm的Join 和 循环Related
 func GetArticles(pageNum int, pageSize int, maps interface{}) (articles []Article) {
-    db.Preload("Tag").Where(maps).Offset(pageNum).Limit(pageSize).Find(&articles)
+    tmpDb := db
+    if v, ok := maps.(map[string]interface{})["tag_id"]; ok {
+        tmpDb = tmpDb.Where("tag_id = ?", v)
+    }
+    if v, ok := maps.(map[string]interface{})["state"]; ok {
+        tmpDb = tmpDb.Where("state = ?", v)
+    }
+    tmpDb.Preload("Tag").Where("deleted_on = ?", 0).Offset(pageNum).Limit(pageSize).Find(&articles)
     return
 }
 
 func GetArticleTotal(maps interface{}) (count int) {
-    db.Model(&Article{}).Where(maps).Count(&count)
+    tmpDb := db
+    if v, ok := maps.(map[string]interface{})["tag_id"]; ok {
+        tmpDb = tmpDb.Where("tag_id = ?", v)
+    }
+    if v, ok := maps.(map[string]interface{})["state"]; ok {
+        tmpDb = tmpDb.Where("state = ?", v)
+    }
+    tmpDb.Model(&Article{}).Where("deleted_on = ?", 0).Count(&count)
     return
 }
 

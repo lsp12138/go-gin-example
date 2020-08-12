@@ -46,6 +46,18 @@ var doc = `{
                         "description": "标签id",
                         "name": "tag_id",
                         "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "分页当前页",
+                        "name": "page_num",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "分页大小",
+                        "name": "page_size",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -254,6 +266,18 @@ var doc = `{
                         "type": "integer",
                         "description": "状态",
                         "name": "state",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "分页当前页",
+                        "name": "page_num",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "分页大小",
+                        "name": "page_size",
                         "in": "query"
                     }
                 ],

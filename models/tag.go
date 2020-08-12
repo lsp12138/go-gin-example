@@ -31,12 +31,29 @@ func (tag *Tag) BeforeUpdate(scope *gorm.Scope) error {
 }
 
 func GetTags(pageNum int, pageSize int, maps interface{}) (tags []Tag) {
-    db.Where(maps).Offset(pageNum).Limit(pageSize).Find(&tags)
+    // db.Where(maps).Offset(pageNum).Limit(pageSize).Find(&tags)
+    tmpDb := db
+    if v, ok := maps.(map[string]interface{})["name"]; ok {
+        // tmpDb = db.Where("name LIKE ?", fmt.Sprintf("%%%s%%", v))
+        // 如果模糊查询的值里头有%和_字符，需要用/转义表示
+        tmpDb = tmpDb.Where("name LIKE ?", "%"+v.(string)+"%")
+    }
+    if v, ok := maps.(map[string]interface{})["state"]; ok {
+        tmpDb = tmpDb.Where("state = ?", v)
+    }
+    tmpDb.Where("deleted_on = ?", 0).Offset(pageNum).Limit(pageSize).Find(&tags)
     return
 }
 
 func GetTagTotal(maps interface{}) (count int) {
-    db.Model(&Tag{}).Where(maps).Count(&count)
+    tmpDb := db
+    if v, ok := maps.(map[string]interface{})["name"]; ok {
+        tmpDb = tmpDb.Where("name LIKE ?", "%"+v.(string)+"%")
+    }
+    if v, ok := maps.(map[string]interface{})["state"]; ok {
+        tmpDb = tmpDb.Where("state = ?", v)
+    }
+    tmpDb.Model(&Tag{}).Where("deleted_on = ?", 0).Count(&count)
     return
 }
 

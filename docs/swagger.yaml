@@ -13,6 +13,14 @@ paths:
         in: query
         name: tag_id
         type: integer
+      - description: 分页当前页
+        in: query
+        name: page_num
+        type: integer
+      - description: 分页大小
+        in: query
+        name: page_size
+        type: integer
       produces:
       - application/json
       responses:
@@ -152,6 +160,14 @@ paths:
       - description: 状态
         in: query
         name: state
+        type: integer
+      - description: 分页当前页
+        in: query
+        name: page_num
+        type: integer
+      - description: 分页大小
+        in: query
+        name: page_size
         type: integer
       produces:
       - application/json
