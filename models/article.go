@@ -1,51 +1,51 @@
 package models
 
 import (
-	"github.com/jinzhu/gorm"
-	"time"
+    "github.com/jinzhu/gorm"
+    "time"
 )
 
 // 文章的数据库操作
 
 type Article struct {
-	Model
+    Model
 
-	TagID int `json:"tag_id" gorm:"index"`
-	Tag   Tag `json:"tag"`
+    TagID int `json:"tag_id" gorm:"index"`
+    Tag   Tag `json:"tag"`
 
-	Title      string `json:"title"`
-	Desc       string `json:"desc"`
-	Content    string `json:"content"`
-	CreatedBy  string `json:"created_by"`
-	ModifiedBy string `json:"modified_by"`
-	State      int    `json:"state"`
+    Title      string `json:"title"`
+    Desc       string `json:"desc"`
+    Content    string `json:"content"`
+    CreatedBy  string `json:"created_by"`
+    ModifiedBy string `json:"modified_by"`
+    State      int    `json:"state"`
 }
 
 func (article *Article) BeforeCreate(scope *gorm.Scope) error {
-	scope.SetColumn("CreatedOn", time.Now().Unix())
-	return nil
+    scope.SetColumn("CreatedOn", time.Now().Unix())
+    return nil
 }
 
 func (article *Article) BeforeUpdate(scope *gorm.Scope) error {
-	scope.SetColumn("ModifiedOn", time.Now().Unix())
-	return nil
+    scope.SetColumn("ModifiedOn", time.Now().Unix())
+    return nil
 }
 
 func ExistArticleByID(id int) bool {
-	var article Article
-	db.Select("id").Where("id = ?", id).First(&article)
-	if article.ID > 0 {
-		return true
-	}
-	return false
+    var article Article
+    db.Select("id").Where("id = ?", id).First(&article)
+    if article.ID > 0 {
+        return true
+    }
+    return false
 }
 
 // Article表是如何关联到Tag表的？
 // gorm通过Related进行关联查询
 func GetArticle(id int) (article Article) {
-	db.Where("id = ?", id).First(&article)
-	db.Model(&article).Related(&article.Tag)
-	return
+    db.Where("id = ?", id).First(&article)
+    db.Model(&article).Related(&article.Tag)
+    return
 }
 
 // Preload可以查询出每一项的关联Tag
@@ -55,33 +55,48 @@ func GetArticle(id int) (article Article) {
 // 那么有没有别的办法呢，大致是两种
 // gorm的Join 和 循环Related
 func GetArticles(pageNum int, pageSize int, maps interface{}) (articles []Article) {
-	db.Preload("Tag").Where(maps).Offset(pageNum).Limit(pageSize).Find(&articles)
-	return
+    tmpDb := db
+    if v, ok := maps.(map[string]interface{})["tag_id"]; ok {
+        tmpDb = tmpDb.Where("tag_id = ?", v)
+    }
+    if v, ok := maps.(map[string]interface{})["state"]; ok {
+        tmpDb = tmpDb.Where("state = ?", v)
+    }
+    tmpDb.Preload("Tag").Where("deleted_on = ?", 0).Offset(pageNum).Limit(pageSize).Find(&articles)
+    return
 }
 
 func GetArticleTotal(maps interface{}) (count int) {
-	db.Model(&Article{}).Where(maps).Count(&count)
-	return
+    tmpDb := db
+    if v, ok := maps.(map[string]interface{})["tag_id"]; ok {
+        tmpDb = tmpDb.Where("tag_id = ?", v)
+    }
+    if v, ok := maps.(map[string]interface{})["state"]; ok {
+        tmpDb = tmpDb.Where("state = ?", v)
+    }
+    tmpDb.Model(&Article{}).Where("deleted_on = ?", 0).Count(&count)
+    return
 }
 
 func EditArticle(id int, data interface{}) bool {
-	db.Model(&Article{}).Where("id = ?", id).Updates(data)
-	return true
+    db.Model(&Article{}).Where("id = ?", id).Updates(data)
+    return true
 }
 
 func AddArticle(data map[string]interface{}) bool {
-	db.Create(&Article{
-		TagID:     data["tag_id"].(int),
-		Title:     data["title"].(string),
-		Desc:      data["desc"].(string),
-		Content:   data["content"].(string),
-		CreatedBy: data["created_by"].(string),
-		State:     data["state"].(int),
-	})
-	return true
+    db.Create(&Article{
+        TagID:     data["tag_id"].(int),
+        Title:     data["title"].(string),
+        Desc:      data["desc"].(string),
+        Content:   data["content"].(string),
+        CreatedBy: data["created_by"].(string),
+        State:     data["state"].(int),
+    })
+    return true
 }
 
 func DeleteArticle(id int) bool {
-	db.Where("id = ?", id).Delete(&Article{})
-	return true
+    db.Model(&Article{}).Where("id = ?", id).Update("deleted_on", time.Now().Unix())
+    // db.Where("id = ?", id).Delete(&Article{})
+    return true
 }

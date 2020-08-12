@@ -1,20 +1,14 @@
 package main
 
 import (
-	"fmt"
-	"github.com/lsp12138/go-gin-example/pkg/setting"
-	"github.com/lsp12138/go-gin-example/routers"
-	"net/http"
+    "fmt"
+    "github.com/lsp12138/go-gin-example/conf"
+    "github.com/lsp12138/go-gin-example/models"
+    "github.com/lsp12138/go-gin-example/routers"
 )
 
 func main() {
-	router := routers.InitRouter()
-	s := &http.Server{
-		Addr:           fmt.Sprintf(":%d", setting.HTTPPort),
-		Handler:        router,
-		ReadTimeout:    setting.ReadTimeout,
-		WriteTimeout:   setting.WriteTimeout,
-		MaxHeaderBytes: 1 << 20,
-	}
-	s.ListenAndServe()
+    router := routers.InitRouter()
+    router.Run(fmt.Sprintf(":%s", conf.AppConfig.HttpPort))
+    defer models.CloseDB()
 }
