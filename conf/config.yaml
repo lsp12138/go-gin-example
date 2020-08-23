@@ -7,6 +7,12 @@ APP:
   PAGE_SIZE: 10
   JWT_SECRET: 23347$040412
   HTTP_PORT: 8000
+  RUNTIME_ROOT_PATH: runtime/
+  IMAGE_PREFIX_URL: http://127.0.0.1:8000
+  IMAGE_SAVE_PATH: upload/images/
+  # MB
+  IMAGE_MAX_SIZE: 5
+  IMAGE_ALLOW_EXTS: [.jpg, .jpeg, .png]
 
 DB:
   TYPE: mysql
