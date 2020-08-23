@@ -6,6 +6,7 @@ import (
     _ "github.com/jinzhu/gorm/dialects/mysql"
     "github.com/lsp12138/go-gin-example/conf"
     "log"
+    "time"
 )
 
 // models的初始化使用，使用github.com/jinzhu/gorm包操作数据库
@@ -37,8 +38,37 @@ func init() {
     db.LogMode(true)
     db.DB().SetMaxIdleConns(10)
     db.DB().SetMaxOpenConns(100)
+    // 注册 Callbacks
+    db.Callback().Create().Replace("gorm:update_time_stamp", updateTimeStampForCreateCallback)
+    db.Callback().Update().Replace("gorm:update_time_stamp", updateTimeStampForUpdateCallback)
 }
 
 func CloseDB() {
     defer db.Close()
+}
+
+// updateTimeStampForCreateCallback will set `CreatedOn`, `ModifiedOn` when creating
+func updateTimeStampForCreateCallback(scope *gorm.Scope) {
+    if !scope.HasError() {
+        nowTime := time.Now().Unix()
+        if createTimeField, ok := scope.FieldByName("CreatedOn"); ok {
+            if createTimeField.IsBlank {
+                createTimeField.Set(nowTime)
+            }
+        }
+        if modifyTimeField, ok := scope.FieldByName("ModifiedOn"); ok {
+            if modifyTimeField.IsBlank {
+                modifyTimeField.Set(nowTime)
+            }
+        }
+    }
+}
+
+// updateTimeStampForUpdateCallback will set `ModifyTime` when updating
+// scope.Get(...) 根据入参获取设置了字面值的参数，
+// 例如本文中是 gorm:update_column ，它会去查找含这个字面值的字段属性
+func updateTimeStampForUpdateCallback(scope *gorm.Scope) {
+    if _, ok := scope.Get("gorm:update_column"); !ok {
+        scope.SetColumn("ModifiedOn", time.Now().Unix())
+    }
 }

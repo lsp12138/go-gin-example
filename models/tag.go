@@ -1,7 +1,6 @@
 package models
 
 import (
-    "github.com/jinzhu/gorm"
     "time"
 )
 
@@ -14,20 +13,6 @@ type Tag struct {
     CreatedBy  string `json:"created_by"`
     ModifiedBy string `json:"modified_by"`
     State      int    `json:"state"`
-}
-
-// BeforeCreate 创建时自动补充创建时间字段
-// 使用gorm的Callbacks，可以将回调方法定义为模型结构的指针，
-// 在创建、更新、查询、删除时都可以被调用，如果任何回调返回错误，gorm 将停止未来操作并回滚所有更改。
-func (tag *Tag) BeforeCreate(scope *gorm.Scope) error {
-    scope.SetColumn("CreatedOn", time.Now().Unix())
-    return nil
-}
-
-// BeforeUpdate 更新时自动补充修改时间字段
-func (tag *Tag) BeforeUpdate(scope *gorm.Scope) error {
-    scope.SetColumn("ModifiedOn", time.Now().Unix())
-    return nil
 }
 
 func GetTags(pageNum int, pageSize int, maps interface{}) (tags []Tag) {
