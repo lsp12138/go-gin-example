@@ -8,6 +8,9 @@ import (
 )
 
 func main() {
+    // 初始化配置
+    conf.Setup()
+    models.Setup()
     router := routers.InitRouter()
     router.Run(fmt.Sprintf(":%s", conf.AppConfig.HttpPort))
     defer models.CloseDB()

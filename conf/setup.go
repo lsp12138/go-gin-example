@@ -16,7 +16,7 @@ var (
     DBConfig  *dbConfig
 )
 
-func init() {
+func Setup() {
     loadConfigFromYaml()
     AppConfig = loadAppConfig()
     DBConfig = loadDbConfig()
