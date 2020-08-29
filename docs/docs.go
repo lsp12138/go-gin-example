@@ -18,12 +18,7 @@ var doc = `{
     "info": {
         "description": "{{.Description}}",
         "title": "{{.Title}}",
-        "termsOfService": "http://github.com",
-        "contact": {
-            "name": "API Support",
-            "url": "http://www.cnblogs.com",
-            "email": "×××@qq.com"
-        },
+        "contact": {},
         "license": {},
         "version": "{{.Version}}"
     },
@@ -452,7 +447,7 @@ var doc = `{
             }
         },
         "/upload": {
-            "put": {
+            "post": {
                 "description": "上传文章封面图片",
                 "consumes": [
                     "multipart/form-data"
@@ -497,12 +492,12 @@ type swaggerInfo struct {
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
-	Version:     "1.0",
+	Version:     "",
 	Host:        "",
 	BasePath:    "",
 	Schemes:     []string{},
-	Title:       "go-gin-example",
-	Description: "\"gin框架demo\"",
+	Title:       "",
+	Description: "",
 }
 
 type s struct{}

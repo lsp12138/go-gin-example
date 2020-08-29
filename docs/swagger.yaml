@@ -1,13 +1,6 @@
 info:
-  contact:
-    email: ×××@qq.com
-    name: API Support
-    url: http://www.cnblogs.com
-  description: '"gin框架demo"'
+  contact: {}
   license: {}
-  termsOfService: http://github.com
-  title: go-gin-example
-  version: "1.0"
 paths:
   /api/v1/articles:
     get:
@@ -290,7 +283,7 @@ paths:
       tags:
       - auth管理
   /upload:
-    put:
+    post:
       consumes:
       - multipart/form-data
       description: 上传文章封面图片

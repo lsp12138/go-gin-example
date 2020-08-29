@@ -56,7 +56,8 @@ func CheckImageSize(f multipart.File) bool {
         log.Println(err)
         return false
     }
-    return size <= conf.AppConfig.ImageMaxSize
+    // MB转换为byte
+    return size <= conf.AppConfig.ImageMaxSize*1024*1024
 }
 
 func CheckImage(src string) error {

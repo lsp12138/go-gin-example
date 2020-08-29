@@ -1,16 +1,8 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "\"gin框架demo\"",
-        "title": "go-gin-example",
-        "termsOfService": "http://github.com",
-        "contact": {
-            "name": "API Support",
-            "url": "http://www.cnblogs.com",
-            "email": "×××@qq.com"
-        },
-        "license": {},
-        "version": "1.0"
+        "contact": {},
+        "license": {}
     },
     "paths": {
         "/api/v1/articles": {
@@ -435,7 +427,7 @@
             }
         },
         "/upload": {
-            "put": {
+            "post": {
                 "description": "上传文章封面图片",
                 "consumes": [
                     "multipart/form-data"

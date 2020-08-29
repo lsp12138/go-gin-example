@@ -15,7 +15,7 @@ import (
 // @Accept multipart/form-data
 // @Param image formData file true "图片"
 // @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
-// @Router /upload [put]
+// @Router /upload [post]
 func UploadImage(c *gin.Context) {
     code := e.SUCCESS
     data := make(map[string]string)
