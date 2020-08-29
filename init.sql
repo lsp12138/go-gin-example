@@ -1,4 +1,6 @@
 -- 新建go_gin_blog数据库
+CREATE DATABASE IF NOT EXISTS `go_gin_blog`;
+USE `go_gin_blog`;
 
 -- 标签表
 DROP TABLE IF EXISTS `blog_tag`;
@@ -22,6 +24,7 @@ CREATE TABLE `blog_article` (
   `title` varchar(255) DEFAULT '' COMMENT '文章标题',
   `desc` varchar(255) DEFAULT '' COMMENT '简述',
   `content` text,
+  `cover_image_url` varchar(255) DEFAULT '' COMMENT '封面图片地址',
   `created_on` int(10) unsigned DEFAULT '0' COMMENT '创建时间',
   `created_by` varchar(255) DEFAULT '' COMMENT '创建人',
   `modified_on` int(10) unsigned DEFAULT '0' COMMENT '修改时间',

@@ -24,6 +24,9 @@ func InitRouter() *gin.Engine {
     // 获取token的接口
     r.GET("/auth", api.GetAuth)
 
+    // 上传图片接口
+    r.POST("/upload", api.UploadImage)
+
     apiv1 := r.Group("/api/v1")
     // 接入jwt中间件到这个路由组
     // apiv1.Use(jwt.JWT())

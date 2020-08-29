@@ -1,6 +1,13 @@
 info:
-  contact: {}
+  contact:
+    email: ×××@qq.com
+    name: API Support
+    url: http://www.cnblogs.com
+  description: '"gin框架demo"'
   license: {}
+  termsOfService: http://github.com
+  title: go-gin-example
+  version: "1.0"
 paths:
   /api/v1/articles:
     get:
@@ -46,6 +53,11 @@ paths:
       - description: 内容
         in: query
         name: content
+        required: true
+        type: string
+      - description: 封面图片
+        in: query
+        name: cover_image_url
         required: true
         type: string
       - description: 创建者
@@ -277,4 +289,25 @@ paths:
       summary: 获取token
       tags:
       - auth管理
+  /upload:
+    put:
+      consumes:
+      - multipart/form-data
+      description: 上传文章封面图片
+      parameters:
+      - description: 图片
+        in: formData
+        name: image
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":{},"msg":"ok"}'
+          schema:
+            type: string
+      summary: 上传图片
+      tags:
+      - 上传图片
 swagger: "2.0"

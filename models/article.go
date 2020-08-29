@@ -12,12 +12,13 @@ type Article struct {
     TagID int `json:"tag_id" gorm:"index"`
     Tag   Tag `json:"tag"`
 
-    Title      string `json:"title"`
-    Desc       string `json:"desc"`
-    Content    string `json:"content"`
-    CreatedBy  string `json:"created_by"`
-    ModifiedBy string `json:"modified_by"`
-    State      int    `json:"state"`
+    Title         string `json:"title"`
+    Desc          string `json:"desc"`
+    Content       string `json:"content"`
+    CoverImageUrl string `json:"cover_image_url"`
+    CreatedBy     string `json:"created_by"`
+    ModifiedBy    string `json:"modified_by"`
+    State         int    `json:"state"`
 }
 
 func ExistArticleByID(id int) bool {
@@ -73,13 +74,15 @@ func EditArticle(id int, data interface{}) bool {
 }
 
 func AddArticle(data map[string]interface{}) bool {
+    // 官方文档：根据 map 创建记录时，association 不会被调用，且主键也不会自动填充
     db.Create(&Article{
-        TagID:     data["tag_id"].(int),
-        Title:     data["title"].(string),
-        Desc:      data["desc"].(string),
-        Content:   data["content"].(string),
-        CreatedBy: data["created_by"].(string),
-        State:     data["state"].(int),
+        TagID:         data["tag_id"].(int),
+        Title:         data["title"].(string),
+        Desc:          data["desc"].(string),
+        Content:       data["content"].(string),
+        CoverImageUrl: data["cover_image_url"].(string),
+        CreatedBy:     data["created_by"].(string),
+        State:         data["state"].(int),
     })
     return true
 }

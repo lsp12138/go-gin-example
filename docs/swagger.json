@@ -1,8 +1,16 @@
 {
     "swagger": "2.0",
     "info": {
-        "contact": {},
-        "license": {}
+        "description": "\"gin框架demo\"",
+        "title": "go-gin-example",
+        "termsOfService": "http://github.com",
+        "contact": {
+            "name": "API Support",
+            "url": "http://www.cnblogs.com",
+            "email": "×××@qq.com"
+        },
+        "license": {},
+        "version": "1.0"
     },
     "paths": {
         "/api/v1/articles": {
@@ -76,6 +84,13 @@
                         "type": "string",
                         "description": "内容",
                         "name": "content",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "封面图片",
+                        "name": "cover_image_url",
                         "in": "query",
                         "required": true
                     },
@@ -406,6 +421,38 @@
                         "description": "密码",
                         "name": "password",
                         "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"data\":{},\"msg\":\"ok\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/upload": {
+            "put": {
+                "description": "上传文章封面图片",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "上传图片"
+                ],
+                "summary": "上传图片",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "图片",
+                        "name": "image",
+                        "in": "formData",
                         "required": true
                     }
                 ],

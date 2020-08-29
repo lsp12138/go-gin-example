@@ -101,6 +101,7 @@ func GetArticles(c *gin.Context) {
 // @Param title query string true "标题"
 // @Param desc query string true "描述"
 // @Param content query string true "内容"
+// @Param cover_image_url query string true "封面图片"
 // @Param created_by query string true "创建者"
 // @Param tag_id query int true "标签id"
 // @Success 200 {string} json "{"code":200,"data":{},"msg":"ok"}"
@@ -110,6 +111,7 @@ func AddArticle(c *gin.Context) {
     title := c.Query("title")
     desc := c.Query("desc")
     content := c.Query("content")
+    coverImageUrl := c.Query("cover_image_url")
     createdBy := c.Query("created_by")
     state := com.StrTo(c.DefaultQuery("state", "0")).MustInt()
 
@@ -118,6 +120,7 @@ func AddArticle(c *gin.Context) {
     valid.Required(title, "title").Message("标题不能为空")
     valid.Required(desc, "desc").Message("简述不能为空")
     valid.Required(content, "content").Message("内容不能为空")
+    valid.Required(coverImageUrl, "cover_image_url").Message("封面图片不能为空")
     valid.Required(createdBy, "created_by").Message("创建人不能为空")
     valid.Range(state, 0, 1, "state").Message("状态只允许0或1")
 
@@ -129,6 +132,7 @@ func AddArticle(c *gin.Context) {
             data["title"] = title
             data["desc"] = desc
             data["content"] = content
+            data["cover_image_url"] = coverImageUrl
             data["created_by"] = createdBy
             data["state"] = state
 
@@ -170,6 +174,7 @@ func EditArticle(c *gin.Context) {
     title := c.Query("title")
     desc := c.Query("desc")
     content := c.Query("content")
+    coverImageUrl := c.Query("cover_image_url")
     modifiedBy := c.Query("modified_by")
 
     var state int = -1
@@ -201,6 +206,9 @@ func EditArticle(c *gin.Context) {
                 }
                 if content != "" {
                     data["content"] = content
+                }
+                if coverImageUrl != "" {
+                    data["cover_image_url"] = coverImageUrl
                 }
 
                 data["modified_by"] = modifiedBy

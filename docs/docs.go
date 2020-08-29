@@ -18,7 +18,12 @@ var doc = `{
     "info": {
         "description": "{{.Description}}",
         "title": "{{.Title}}",
-        "contact": {},
+        "termsOfService": "http://github.com",
+        "contact": {
+            "name": "API Support",
+            "url": "http://www.cnblogs.com",
+            "email": "×××@qq.com"
+        },
         "license": {},
         "version": "{{.Version}}"
     },
@@ -96,6 +101,13 @@ var doc = `{
                         "type": "string",
                         "description": "内容",
                         "name": "content",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "封面图片",
+                        "name": "cover_image_url",
                         "in": "query",
                         "required": true
                     },
@@ -438,6 +450,38 @@ var doc = `{
                     }
                 }
             }
+        },
+        "/upload": {
+            "put": {
+                "description": "上传文章封面图片",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "上传图片"
+                ],
+                "summary": "上传图片",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "图片",
+                        "name": "image",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"data\":{},\"msg\":\"ok\"}",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
         }
     }
 }`
@@ -453,12 +497,12 @@ type swaggerInfo struct {
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
-	Version:     "",
+	Version:     "1.0",
 	Host:        "",
 	BasePath:    "",
 	Schemes:     []string{},
-	Title:       "",
-	Description: "",
+	Title:       "go-gin-example",
+	Description: "\"gin框架demo\"",
 }
 
 type s struct{}
