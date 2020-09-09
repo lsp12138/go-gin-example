@@ -10,6 +10,7 @@
 - dao传入参数优化
 - 加入文章和tag的state判断逻辑
 - 优雅的重启服务
+- swagger显示默认值（struct字段的tag加example）
 
 # 目录结构
 
